@@ -1,3 +1,7 @@
+"""
+Instructions: https://adventofcode.com/2023/day/3
+"""
+
 from collections import defaultdict
 from typing import Tuple, List, Dict, Set
 

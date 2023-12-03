@@ -1,3 +1,7 @@
+"""
+Instructions: https://adventofcode.com/2023/day/2
+"""
+
 from typing import List
 
 from AdventOfCode2023 import read_data
