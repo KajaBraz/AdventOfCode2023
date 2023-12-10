@@ -7,16 +7,17 @@ from typing import List, Tuple, Set
 from AdventOfCode2023 import read_data
 
 
-def solve_part_1(maze: List[str], initial_pipe: str) -> Tuple[int, Set[Tuple[int, int]]]:
-    return solve(maze, initial_pipe)
+def solve_part_1(maze: List[str], initial_pipe: str) -> int:
+    return solve(maze, initial_pipe)[0]
 
 
-def solve_part_2(original_maze: List[str], initial_pipe: str, sample_pipes_path: Set[Tuple[int, int]]) -> int:
+def solve_part_2(original_maze: List[str], initial_pipe: str) -> int:
+    _, pipes_path = solve(original_maze, initial_pipe)
     start_i, start_j = get_s(original_maze)
     original_maze = [list(row) for row in original_maze]
     original_maze[start_i][start_j] = initial_pipe
     expanded_maze = get_expanded_blank_maze(original_maze)
-    remove_extra_pipes(original_maze, sample_pipes_path)
+    remove_extra_pipes(original_maze, pipes_path)
     fill_expanded_maze(original_maze, expanded_maze)
     remove_outer_ground(expanded_maze)
     return count_enclosed(original_maze, expanded_maze)
@@ -120,10 +121,10 @@ if __name__ == '__main__':
     sample_initial_pipe = 'F'
     input_initial_pipe = '|'
 
-    example_1, sample_pipes_path = solve_part_1(sample_2, sample_initial_pipe)
-    part_1, input_pipes_path = solve_part_1(my_input, input_initial_pipe)
+    example_1 = solve_part_1(sample_1, sample_initial_pipe)
+    part_1 = solve_part_1(my_input, input_initial_pipe)
     print(f'Part 1\n\tExample: {example_1}\n\tSolution: {part_1}')
 
-    example_2 = solve_part_2(sample_2, sample_initial_pipe, sample_pipes_path)
-    part_2 = solve_part_2(my_input, input_initial_pipe, input_pipes_path)
+    example_2 = solve_part_2(sample_2, sample_initial_pipe)
+    part_2 = solve_part_2(my_input, input_initial_pipe)
     print(f'Part 2\n\tExample: {example_2}\n\tSolution: {part_2}')
