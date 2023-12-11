@@ -26,24 +26,22 @@ def solve_part_2(original_maze: List[str], initial_pipe: str) -> int:
 def solve(original_maze: List[str], initial_pipe: str) -> Tuple[int, Set[Tuple[int, int]]]:
     start_i, start_j = get_s(original_maze)
     visited = {(start_i, start_j)}
-    queue = [get_adhering_pipes(original_maze, start_i, start_j, initial_pipe, visited)]
+    queue = get_adhering_pipes(original_maze, start_i, start_j, initial_pipe, visited)
     steps = 0
     while queue:
-        adhering = queue.pop(0)
-        subqueue = set()
-        for i, j in adhering:
-            subqueue.update(get_adhering_pipes(original_maze, i, j, original_maze[i][j], visited))
-            visited.add((i, j))
+        i, j = queue.pop(0)
+        visited.add((i, j))
+        adhering = get_adhering_pipes(original_maze, i, j, original_maze[i][j], visited)
         steps += 1
-        if subqueue:
-            queue.append(subqueue)
-    return steps, visited
+        queue.extend(adhering)
+    return steps // 2, visited
 
 
 def get_s(maze: List[str]) -> Tuple[int, int]:
     for i in range(len(maze)):
         if 'S' in set(maze[i]):
             return i, maze[i].index('S')
+    return (-1, -1)
 
 
 def get_adhering_pipes(maze: List[str], i: int, j: int, pipe: str, visited: Set[Tuple[int, int]]) -> List[
@@ -73,11 +71,11 @@ def fill_expanded_maze(original_maze: List[List[str]], expanded_maze: List[List[
                               "7": "...##..#.",
                               "F": "....##.#.",
                               ".": "........."}
-    for r in range(len(original_maze)):
-        for c in range(len(original_maze[0])):
-            for dr in range(3):
-                expanded_maze[r * 3 + dr][c * 3: c * 3 + 3] = expanded_pipes_mapping[original_maze[r][c]][
-                                                              dr * 3:dr * 3 + 3]
+    for i in range(len(original_maze)):
+        for j in range(len(original_maze[0])):
+            for k in range(3):
+                expanded_maze[i * 3 + k][j * 3: j * 3 + 3] = expanded_pipes_mapping[original_maze[i][j]][
+                                                             k * 3:k * 3 + 3]
 
 
 def remove_extra_pipes(original_maze: List[List[str]], pipes_path: Set[Tuple[int, int]]) -> None:
