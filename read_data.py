@@ -164,4 +164,6 @@ def get_data_09_all_line_ints(path: str) -> list[list[int]]:
     """
 
     data = get_data_02_str_list(path)
-    return [[int(n) for n in gr] for gr in [re.findall(r'\d+', row) for row in data]]
+    return [[int(n) for n in gr] for gr in [re.findall(r'-?\d+', row) for row in data]]
+
+
